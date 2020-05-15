@@ -1,6 +1,7 @@
 package com.example.air5core.controllers;
 
-import com.example.air5core.entities.Product;
+import com.example.air5core.models.entities.Product;
+import com.example.air5core.models.request.SearchProductRequest;
 import com.example.air5core.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,11 @@ public class ProductController {
     @GetMapping("")
     public List<Product> getProducts() {
         return productService.getProducts();
+    }
+
+    @PostMapping("search")
+    public List<Product> searchProducts(@RequestBody SearchProductRequest searchProductRequest) {
+        return productService.searchProducts(searchProductRequest);
     }
 
     @GetMapping("{id}")
