@@ -14,6 +14,7 @@ production:
     - docker stop air5-api-prod || true
     - docker rm -f air5-api-prod || true
     - docker run --name air5-api-prod -d -p $SPRING_PORT_PROD:$SPRING_PORT_LOCAL --restart=always air5-api:prod
+    - docker system prune -f
   only:
     refs:
     - master

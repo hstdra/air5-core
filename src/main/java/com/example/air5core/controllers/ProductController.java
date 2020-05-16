@@ -24,7 +24,9 @@ public class ProductController {
     }
 
     @PostMapping("filter")
-    public Paging<Product> filterProducts(@RequestBody FilterProductRequest filterProductRequest, @RequestParam int pageNumber, @RequestParam int pageSize) {
+    public Paging<Product> filterProducts(@RequestBody FilterProductRequest filterProductRequest,
+                                          @RequestParam int pageNumber,
+                                          @RequestParam int pageSize) {
         return productService.filterProducts(filterProductRequest, pageNumber, pageSize);
     }
 

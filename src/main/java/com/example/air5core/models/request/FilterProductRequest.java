@@ -11,4 +11,6 @@ public class FilterProductRequest {
     private String room;
     private String category;
     private List<ProductAttribute> productAttributes;
+    private double minPrice = 0;
+    private double maxPrice = Double.MAX_VALUE;
 }

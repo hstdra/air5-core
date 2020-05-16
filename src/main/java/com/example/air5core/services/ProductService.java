@@ -81,6 +81,9 @@ public class ProductService {
         String q = filterProductRequest.getQuery();
         String room = filterProductRequest.getRoom();
         String category = filterProductRequest.getCategory();
+        double minPrice = filterProductRequest.getMinPrice();
+        double maxPrice = filterProductRequest.getMaxPrice();
+
         List<ProductAttribute> productAttributes = filterProductRequest.getProductAttributes();
         List<CriteriaDefinition> criteriaDefinitions = new LinkedList<>();
 
@@ -101,6 +104,8 @@ public class ProductService {
                     Criteria.where("attribute").is(productAttribute.getAttribute()).and("value").is(productAttribute.getValue())
             )));
         }
+
+        criteriaDefinitions.add(Criteria.where("discountPrice").gte(minPrice).lte(maxPrice));
 
         return criteriaDefinitions;
     }
