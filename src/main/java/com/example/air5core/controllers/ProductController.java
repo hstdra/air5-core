@@ -1,8 +1,10 @@
 package com.example.air5core.controllers;
 
 import com.example.air5core.models.entities.Product;
-import com.example.air5core.models.request.SearchProductRequest;
+import com.example.air5core.models.others.Paging;
+import com.example.air5core.models.request.FilterProductRequest;
 import com.example.air5core.services.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,19 +23,14 @@ public class ProductController {
         return productService.getProducts();
     }
 
-    @PostMapping("search")
-    public List<Product> searchProducts(@RequestBody SearchProductRequest searchProductRequest) {
-        return productService.searchProducts(searchProductRequest);
+    @PostMapping("filter")
+    public Paging<Product> filterProducts(@RequestBody FilterProductRequest filterProductRequest, @RequestParam int pageNumber, @RequestParam int pageSize) {
+        return productService.filterProducts(filterProductRequest, pageNumber, pageSize);
     }
 
     @GetMapping("{id}")
     public Product getProduct(@PathVariable("id") String id) {
         return productService.getProduct(id);
-    }
-
-    @PostMapping("")
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
     }
 
     @PostMapping("import")
