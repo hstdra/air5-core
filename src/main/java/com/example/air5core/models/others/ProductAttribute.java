@@ -1,4 +1,4 @@
-package com.example.air5core.models.entities;
+package com.example.air5core.models.others;
 
 import lombok.Data;
 
