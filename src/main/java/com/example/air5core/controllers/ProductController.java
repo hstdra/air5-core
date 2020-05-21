@@ -30,14 +30,14 @@ public class ProductController {
     }
 
     @GetMapping("recommend")
-    public Paging<Product> recommendedProducts(@RequestHeader(value = "x-access-token") String userId,
+    public Paging<Product> recommendedProducts(@RequestHeader(value = "id") String userId,
                                                @RequestParam int pageNumber,
                                                @RequestParam int pageSize) {
         return productService.getRecommendedProducts(userId, pageNumber, pageSize);
     }
 
     @PostMapping("filter")
-    public Paging<Product> filterProducts(@RequestHeader(value = "x-access-token", required = false) String userId,
+    public Paging<Product> filterProducts(@RequestHeader(value = "id", required = false) String userId,
                                           @RequestBody FilterProductRequest filterProductRequest,
                                           @RequestParam int pageNumber,
                                           @RequestParam int pageSize) {
@@ -66,7 +66,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public Product getProduct(@RequestHeader(value = "x-access-token", required = false) String userId, @PathVariable("id") String id) {
+    public Product getProduct(@RequestHeader(value = "id", required = false) String userId, @PathVariable("id") String id) {
         Product product = productService.getProduct(id);
 
         if (product != null) {
