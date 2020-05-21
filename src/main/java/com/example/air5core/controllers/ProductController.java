@@ -9,6 +9,7 @@ import com.example.air5core.services.AdapterService;
 import com.example.air5core.services.ProductService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,8 +66,22 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public Product getProduct(@PathVariable("id") String id) {
-        return productService.getProduct(id);
+    public Product getProduct(@RequestHeader(value = "x-access-token", required = false) String userId, @PathVariable("id") String id) {
+        Product product = productService.getProduct(id);
+
+        if (product != null) {
+            UserPointRequest userPointRequest = new UserPointRequest();
+            List<String> productNames = new LinkedList<>();
+            productNames.add(product.getName());
+
+            userPointRequest.setUserId(userId);
+            userPointRequest.setPoint(5);
+            userPointRequest.setProductNames(productNames);
+
+            adapterService.updateUserPoint(userPointRequest);
+        }
+
+        return product;
     }
 
     @PostMapping("import")

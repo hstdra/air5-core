@@ -23,6 +23,7 @@ import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,11 +47,21 @@ public class ProductService {
 
     public Paging<Product> getRecommendedProducts(String userId, int pageNumber, int pageSize) {
         RecommendProduct recommendProduct = recommendProductRepository.findByUserId(userId).orElse(null);
-        Query query = recommendProduct != null ? new Query(Criteria.where("name").in(recommendProduct.getProductNames())) : new Query();
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Query query;
+        List<Product> products;
+
+        if (recommendProduct != null) {
+            query = new Query(Criteria.where("name").in(recommendProduct.getProductNames()));
+            products = mongoTemplate.find(query.with(pageable), Product.class);
+            products.sort(Comparator.comparing(c -> recommendProduct.getProductNames().indexOf(c.getName())));
+        } else {
+            query = new Query();
+            products = mongoTemplate.find(query.with(pageable), Product.class);
+        }
 
         Page<Product> page = PageableExecutionUtils.getPage(
-                mongoTemplate.find(query.with(pageable), Product.class),
+                products,
                 pageable,
                 () -> mongoTemplate.count(Query.of(query).limit(-1).skip(-1), Product.class));
 
